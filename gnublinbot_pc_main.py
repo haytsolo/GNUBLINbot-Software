@@ -5,26 +5,69 @@
 import pygtk
 pygtk.require('2.0') # Test auf Version ab 2.0
 import gtk
-# Import der eigenen Module
-# import gnublinbot
+# Modul für eine TCP Verbindung über das Netzwerk
+import socket
+# Modul für zeitlich gesteuerte Abläufe
+import time
+
+# Verbindunsdaten und Aufbau einer TCP Verbindung
+ip = '127.0.0.1' # IP des Roboters (Bei lokalem Test am PC 127.0.0.1)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+s.connect((ip, 50000))
 
 class gui:
 
 # Callback Funktionen
 # Verarbeitung der Click-Events
- def function(self, widget, data):
+ def senddata(self, widget, data):
   if data == 'button1':
-   print 'Vorwärts'
+   while True: 
+    nachricht = 'Vorwärts' 
+    s.send(nachricht) # Senden der Nachricht zum Roboter
+    time.sleep(1) # Wartezeit bis Antwort erwartet wird
+    antwort = s.recv(1024) # Antwort vom Roboter
+    if antwort == 'recieved': # Abbruch des Sendens
+     break
   elif data == 'button2':
-   print 'Seitlich Links'
+   while True: 
+    nachricht = 'Seitlich Links' 
+    s.send(nachricht) 
+    time.sleep(1)
+    antwort = s.recv(1024) 
+    if antwort == 'recieved':
+     break
   elif data == 'button3':
-   print 'Start/Stop'
+   while True: 
+    nachricht = 'Start/Stop' 
+    s.send(nachricht) 
+    time.sleep(1)
+    antwort = s.recv(1024) 
+    if antwort == 'recieved':
+     break
   elif data == 'button4':
-   print 'Seitlich Rechts'
+   while True: 
+    nachricht = 'Seitlich Rechts' 
+    s.send(nachricht) 
+    time.sleep(1)
+    antwort = s.recv(1024) 
+    if antwort == 'recieved':
+     break
   elif data == 'button5':
-   print 'Rückwärts'
+   while True: 
+    nachricht = 'Rückwärts' 
+    s.send(nachricht) 
+    time.sleep(1)
+    antwort = s.recv(1024) 
+    if antwort == 'recieved':
+     break
   elif data == 'button6':
-   print 'Beenden'
+   while True: 
+    nachricht = 'Beenden' 
+    s.send(nachricht) 
+    time.sleep(1)
+    antwort = s.recv(1024) 
+    if antwort == 'recieved':
+     break
 
 # Verarbeitung eine Button-Press_events auf den Exit Button
  def destroy(self, widget, data=None):
@@ -53,31 +96,31 @@ class gui:
 
 # Button 1
   self.button1 = gtk.Button("Vorwärts") # Button-Label
-  self.button1.connect("clicked", self.function, "button1") # Button-"clicked"-Event mit Methode zur Verarbeitung verbinden
+  self.button1.connect("clicked", self.senddata, "button1") # Button-"clicked"-Event mit Methode zur Verarbeitung verbinden
   self.box2.pack_start(child=self.button1, expand=True, fill=False, padding=0) # Button in das Fenster (bzw. Container) integrieren
   self.button1.show() # Button anzeigen
 
 # Button 2
   self.button2 = gtk.Button("Seitlich Links")
-  self.button2.connect("clicked", self.function, "button2")
+  self.button2.connect("clicked", self.senddata, "button2")
   self.box3.pack_start(self.button2, True, False, 0)
   self.button2.show()
 
 # Button 3
   self.button3 = gtk.Button(" Start & Stop ")
-  self.button3.connect("clicked", self.function, "button3")
+  self.button3.connect("clicked", self.senddata, "button3")
   self.box3.pack_start(self.button3, True, True, 0)
   self.button3.show()
 
 # Button 4
   self.button4 = gtk.Button("Seitlich Rechts")
-  self.button4.connect("clicked", self.function, "button4")
+  self.button4.connect("clicked", self.senddata, "button4")
   self.box3.pack_start(self.button4, True, False, 0)
   self.button4.show()
 
 # Button 5
   self.button5 = gtk.Button("Rückwärts")
-  self.button5.connect("clicked", self.function, "button5")
+  self.button5.connect("clicked", self.senddata, "button5")
   self.box4.pack_start(self.button5, True, False, 0)
   self.button5.show()
  
@@ -88,15 +131,14 @@ class gui:
 
 # Button 6
   self.button6 = gtk.Button("Beenden")
-  self.button6.connect("clicked", self.function, "button6")
   self.button6.connect_object("clicked", gtk.Widget.destroy, self.window)
   self.box1.pack_start(self.button6, True, True, 0)
   self.button6.show()
 
-  self.box1.show() # Container anzeigen
-  self.box2.show() # Container anzeigen
-  self.box3.show() # Container anzeigen
-  self.box4.show() # Container anzeigen
+  self.box1.show() # Box 1 anzeigen
+  self.box2.show() # Box 2 anzeigen
+  self.box3.show() # Box 3 anzeigen
+  self.box4.show() # Box 4 anzeigen
   self.window.show() # Fenster anzeigen
 
 # Methode zum Aufruf des GTK+ Event Processing (Maus-, Tastatur-, Window-Events)
@@ -106,5 +148,5 @@ def gnublinbot_main():
 # Prüfung ob Programm direkt in Python ausgeführt wird und Instanziierung
 if __name__ == "__main__":
      gnublinbot = gui()
-     gnublinbot_main() # Start der und Warten auf Events
+     gnublinbot_main() # Start der Oberfläche und Warten auf Events
 
