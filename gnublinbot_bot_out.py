@@ -4,7 +4,7 @@
 import gnublinbot_bot_init
 
 def output(eingabe, sta_sto):
- if eingabe != 'x' and sta_sto == True:
+ if eingabe != 'Start/Stop' and sta_sto == True:
 
   if eingabe == 'Beenden':
    print 'Good Bye!'
@@ -15,17 +15,17 @@ def output(eingabe, sta_sto):
   elif eingabe == 'Vorwärts':
    print 'Ich gehe gerade aus!'
    return 0
-  elif eingabe == 's':
+  elif eingabe == 'Rückwärts':
    print 'Ich gehe rückwärts!'
    return 0
   elif eingabe == 'Seitlich Links':
    print 'Ich gehe nach links!'
    return 0
-  elif eingabe == 'd':
+  elif eingabe == 'Seitlich Rechts':
    print 'Ich gehe nach rechts!'
    return 0
   else:
-   print 'Falsche Eingabe! Bitte wasd benutzen!'
+   print 'Fehler: Falsche Eingabe!'
    return 0
 
  if eingabe == 'Beenden':
@@ -41,4 +41,4 @@ def output(eingabe, sta_sto):
   gnublinbot_bot_init.stop()
   return 2
  else:
-  print "Bitte den Roboter erst mit Burron 'Start/Stop' starten!"
+  print "Bitte den Roboter erst mit Button 'Start/Stop' starten!"
