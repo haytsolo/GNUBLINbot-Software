@@ -13,8 +13,9 @@ Bereits integriert:
 - Verarbeitungsroutine für die empfangenen Daten
 
 TODO:
-- Fehlerbehandlung und Ausgabe in eine Error.txt
-- Erzeugung der Steuersignale für den Servocontroller
-- Senden der Signale an den Servocontroller
+- Test: Senden der Signale an den Servocontroller
+- Test: Erzeugung der Steuersignale für den Servocontroller
 - Erzeugung der Bewegungsabläufe
-- Verbesserung der Bewegungsabläufe und Ansteuerung vom mehreren Servos gleichzeitig 
+- Fehlerbehandlung und Ausgabe in eine Error.txt
+- Verbesserung der Bewegungsabläufe und Ansteuerung vom mehreren Servos gleichzeitig
+- Syntax überarbeiten (Gleiches Einrücken, ...) 
