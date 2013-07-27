@@ -11,11 +11,15 @@ Bereits integriert:
 - Senden der Steuerdaten über ein Netzwerk per TCP
 - Empfangen der Steuerdaten und Bestätigung des Empfangs
 - Verarbeitungsroutine für die empfangenen Daten
+- Syntax überarbeiten (Gleiches Einrücken, ...) 
+- Erzeugung der Steuersignale für den Servocontroller
 
 TODO:
 - Test: Senden der Signale an den Servocontroller
-- Test: Erzeugung der Steuersignale für den Servocontroller
 - Erzeugung der Bewegungsabläufe
 - Fehlerbehandlung und Ausgabe in eine Error.txt
 - Verbesserung der Bewegungsabläufe und Ansteuerung vom mehreren Servos gleichzeitig
-- Syntax überarbeiten (Gleiches Einrücken, ...) 
+- Ausfürhliche Kommentare, Funktionskommentare
+
+Hinweis:
+Die Software auf dem Roboter muss als erstes ausgeführt werden!
