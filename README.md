@@ -13,12 +13,16 @@ Bereits integriert:
 - Verarbeitungsroutine für die empfangenen Daten
 - Syntax überarbeiten (Gleiches Einrücken, ...) 
 - Erzeugung der Steuersignale für den Servocontroller
+- Erzeugung der Bewegungsabläufe (ohne optimierung - wie in der Skriptsteuerung)
+- Ansteuerung mehrerer Servos gleichzeitig
+- Senden der Signale an den Servocontroller
+
 
 TODO:
-- Test: Senden der Signale an den Servocontroller
-- Erzeugung der Bewegungsabläufe
+- Test: Ob Software lauffähig auf GNUBLIN
+- Test: Ob Kommandos korrekt übertragen und verarbeitet werden
+- Erzeugung optimierter Bewegungsabläufe
 - Fehlerbehandlung und Ausgabe in eine Error.txt
-- Verbesserung der Bewegungsabläufe und Ansteuerung vom mehreren Servos gleichzeitig
 - Ausfürhliche Kommentare, Funktionskommentare
 
 Hinweis:
