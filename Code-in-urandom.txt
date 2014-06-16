@@ -1,0 +1,98 @@
+ # Dieser Code wird in die Sektion "stop)" der Datei /etc/init.d/urandom integriert und schreibt bei Herunterfahren des 
+ # Systems Code in die Datei /root/.bashrc. Nach der Anmeldung des Benutzers im System wird der Code in der Datei .bashrc
+ # ausgeführt (Überprüfung der Module, WLAN Verbindung, Blink Code, Start GNUBLINbot.py) und die Datei wird gelöscht
+	
+	# Code zwischen echo '' und '' wird in die Datei .bashrc geschrieben
+	echo "#! /bin/sh
+
+	# Überprüfung ob die Datei vorhanden ist, eventuell Löschung und dann Neuerstellung
+	if [ -e ./noerror.txt ]
+	then	
+		rm ./noerror.txt
+		touch ./noerror.txt
+	else
+		touch ./noerror.txt
+        fi
+
+	# Überprüfung ob Modul schon geladen, ggf. Neuladen und Fehlerbehandlung
+	lsmod | grep rt2800usb
+	if [ \"\$?\" = \"1\" ]
+	then
+	echo \"Loading WLAN modules ...\"
+        modprobe rt2800usb
+		if [ \"\$?\" = \"0\" ]
+		then 
+		echo \"WLAN modules loaded successfully!\"		
+		echo \"WLAN modules loaded successfully.\" >> ./noerror.txt
+		else 
+		echo \"WLAN modules not loaded - Error!\"
+		touch > ./error.txt
+		echo \"WLAN modules not loaded - Error!\" >> ./noerror.txt
+		fi
+	else
+	echo \"WLAN modules loaded successfully during startup!\"
+	fi
+
+	# Herstellen der WLAN-Verbindung und ggf. Fehlerbehandlung
+        echo \"Starting WLAN connection ....\"
+        gnublin-wlan -s solo-wlan -k 0815123408151234 -t dhcp > /dev/null
+	ifconfig | grep 192.168.178.45 > /dev/null
+		if [ \"\$?\" = \"0\" ]
+		then 
+		echo \"WLAN connection established!\"
+		echo \"WLAN connection successfully established.\" >> ./noerror.txt
+		else
+		echo \"WLAN connection not established - Error!\" 
+		touch ./error.txt
+		echo \"WLAN connection not established - Error!\" >> ./noerror.txt
+		fi
+
+	# Überprüfung ob Modul schon geladen, ggf. Neuladen und Fehlerbehandlung
+	lsmod | grep cdc_acm
+	if [ \"\$?\" = \"1\" ]
+	then
+	echo \"Loading modules for virtual serial connection ...\"
+	modprobe cdc_acm
+		if [ \"\$?\" = \"0\" ]
+		then
+		echo \"WLAN modules loaded successfully!\"
+		echo \"Modules for virtual serial connection loaded successfully.\" >> ./noerror.txt
+		else 
+		echo \"WLAN modules not loaded - Error!\"
+		touch ./error.txt
+		echo \"WLAN modules not loaded - Error!\" >> ./noerror.txt
+		fi
+	else
+	echo \"WLAN modules loaded successfully during startup!\"
+	fi
+
+	# Fehlerbehandlung falls die Datei error.txt durch vorherige Prozesse angelegt wurde
+	if [ -e ./error.txt ]
+	then 
+       		echo \"An error occured :-( - Check noerror.txt!\"
+        	echo \"0\" > ./counter.txt
+        	while [ \"\`cat ./counter.txt\`\" != \"20\" ]
+        	do
+        	gnublin-gpio -o 1 -p 3 > /dev/null	# Blinkcode wenn Fehler aufgetreten
+        	sleep 0.05
+        	gnublin-gpio -o 0 -p 3 > /dev/null
+        	sleep 0.05
+        	echo \"\`expr \\\`cat ./counter.txt\\\` + 1 \`\" > ./counter.txt
+        	done    
+        	rm ./counter.txt
+		rm ./error.txt
+	else
+        	gnublin-gpio -o 1 -p 3 > /dev/null	# Blinkcode wenn alles in Ordnung
+		sleep 0.5
+        	gnublin-gpio -o 0 -p 3 > /dev/null
+        	sleep 0.5
+        	gnublin-gpio -o 1 -p 3 > /dev/null
+        	echo \"GNUBLINbot ready!!\"
+        fi
+
+        python GNUBLINbot.py
+	
+	# Löschen der Datei nach der Ausführung
+	rm /root/.bashrc
+        touch /root/.bashrc" > /root/.bashrc
+
